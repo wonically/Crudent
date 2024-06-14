@@ -1,6 +1,8 @@
 package com.wonically.crudent.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Entity
@@ -17,41 +19,56 @@ public class Student {
     private Long id;
 
     @Column(name = "code")
+    @NotNull
     private String code;
 
     @Column(name = "name")
+    @NotNull
     private String name;
 
     @Column(name = "age")
+    @NotNull
     private int age;
 
     @Column(name = "gender")
+    @NotNull
     private String gender;
 
     @Column(name = "phone_number")
+    @NotNull
+    @Pattern(regexp = "^$")
     private String phoneNumber;
 
     @Column(name = "address")
+    @NotNull
     private String address;
 
     @Column(name = "email")
+    @NotNull
     private String email;
 
     @Column(name = "height")
-    private String height;
+    @NotNull
+    private float height;
 
     @Column(name = "weight")
-    private String weight;
+    @NotNull
+    private float weight;
 
     @Column(name = "blood_type")
+    @NotNull
+    @Pattern(regexp = "^(O|A|B|AB)[+-]?$")
     private String bloodType;
 
     @Column(name = "nationality")
+    @NotNull
     private String nationality;
 
     @Column(name = "created_at")
+    @NotNull
     private String createdAt;
 
     @Column(name = "updated_at")
+    @NotNull
     private String updatedAt;
 }
