@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "student")
@@ -18,57 +22,44 @@ public class Student {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "code")
-    @NotNull
+    @Column(name = "code", unique = true)
     private String code;
 
     @Column(name = "name")
-    @NotNull
     private String name;
 
     @Column(name = "age")
-    @NotNull
     private int age;
 
     @Column(name = "gender")
-    @NotNull
     private String gender;
 
-    @Column(name = "phone_number")
-    @NotNull
-    @Pattern(regexp = "^$")
+    @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
     @Column(name = "address")
-    @NotNull
     private String address;
 
-    @Column(name = "email")
-    @NotNull
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "height")
-    @NotNull
     private float height;
 
     @Column(name = "weight")
-    @NotNull
     private float weight;
 
     @Column(name = "blood_type")
-    @NotNull
-    @Pattern(regexp = "^(O|A|B|AB)[+-]?$")
     private String bloodType;
 
     @Column(name = "nationality")
-    @NotNull
     private String nationality;
 
     @Column(name = "created_at")
-    @NotNull
-    private String createdAt;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    @NotNull
-    private String updatedAt;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
