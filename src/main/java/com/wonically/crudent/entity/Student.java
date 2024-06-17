@@ -1,11 +1,12 @@
 package com.wonically.crudent.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -15,11 +16,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue
     private Long id;
 
     @Column(name = "code", unique = true)
@@ -56,7 +55,7 @@ public class Student {
     private String nationality;
 
     @Column(name = "created_at")
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
