@@ -25,7 +25,7 @@ import java.time.Instant;
 @Setter
 public class Student {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private Long id;
 
     @Column(name = "code", unique = true)
