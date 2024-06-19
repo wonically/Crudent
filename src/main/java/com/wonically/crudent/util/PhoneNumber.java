@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target( { ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PhoneNumber {
-    String message() default "Phone number must be either (xxx) xxx-xxxx or xxx-xxx-xxxx, with optional +xxx country code.";
+    String message() default "INVALID_PHONE_NUMBER";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
