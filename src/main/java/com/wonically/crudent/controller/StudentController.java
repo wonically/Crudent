@@ -1,7 +1,6 @@
 package com.wonically.crudent.controller;
 
-import com.wonically.crudent.entity.Student;
-import com.wonically.crudent.model.request.ApiResponse;
+import com.wonically.crudent.model.response.ApiResponse;
 import com.wonically.crudent.model.request.StudentCreationRequest;
 import com.wonically.crudent.model.request.StudentUpdateRequest;
 import com.wonically.crudent.service.impl.StudentServiceImpl;

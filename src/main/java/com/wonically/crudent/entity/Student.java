@@ -1,10 +1,8 @@
 package com.wonically.crudent.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,36 +13,38 @@ import java.util.UUID;
 @Table(name = "student")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    UUID id;
 
     @Column(name = "code", unique = true)
-    private String code;
+    String code;
 
     @Column(name = "name")
-    private String name;
+    String name;
 
     @Column(name = "age")
-    private Integer age;
+    Integer age;
 
     @Column(name = "gender")
-    private String gender;
+    String gender;
 
     @Column(name = "phone_number", unique = true)
-    private String phoneNumber;
+    String phoneNumber;
 
     @Column(name = "address")
-    private String address;
+    String address;
 
     @Column(name = "email", unique = true)
-    private String email;
+    String email;
 
     @Column(name = "active")
-    private Boolean active = true;
+    Boolean active = true;
 
 /*
     @Column(name = "height")
@@ -66,9 +66,9 @@ public class Student {
 
     @Column(name = "created_at")
     @CreationTimestamp
-    private Instant createdAt;
+    Instant createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    private Instant updatedAt;
+    Instant updatedAt;
 }

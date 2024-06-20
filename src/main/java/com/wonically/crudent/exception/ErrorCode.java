@@ -1,11 +1,14 @@
 package com.wonically.crudent.exception;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error.", HttpStatus.INTERNAL_SERVER_ERROR),
     CODE_EXISTED(1001, "Code has existed.", HttpStatus.BAD_REQUEST),
@@ -24,7 +27,7 @@ public enum ErrorCode {
     UNAUTHORIZED(1014, "You do not have permission.", HttpStatus.FORBIDDEN),
     ;
 
-    private final Integer code;
-    private final String message;
-    private final HttpStatus httpStatus;
+    Integer code;
+    String message;
+    HttpStatus httpStatus;
 }
