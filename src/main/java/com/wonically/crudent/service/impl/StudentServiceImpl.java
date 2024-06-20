@@ -14,6 +14,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -43,6 +45,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Student> getStudents() {
+        return studentRepository.findAll();
+    }
+
+    @Override
     public Student getStudent(String code) {
         Student student = studentRepository.findByCode(code);
         if (student == null) {
@@ -58,33 +65,6 @@ public class StudentServiceImpl implements StudentService {
             throw new AppException(ErrorCode.STUDENT_NOT_EXISTED);
         }
 
-//        if (studentUpdateRequest.getName() != null) {
-//            updatedStudent.setName(studentUpdateRequest.getName());
-//        }
-//
-//        if (studentUpdateRequest.getAge() != null) {
-//            updatedStudent.setAge(studentUpdateRequest.getAge());
-//        }
-//
-//        if (studentUpdateRequest.getGender() != null) {
-//            updatedStudent.setGender(studentUpdateRequest.getGender());
-//        }
-//
-//        if (studentUpdateRequest.getPhoneNumber() != null) {
-//            updatedStudent.setPhoneNumber(studentUpdateRequest.getPhoneNumber());
-//        }
-//
-//        if (studentUpdateRequest.getAddress() != null) {
-//            updatedStudent.setAddress(studentUpdateRequest.getAddress());
-//        }
-//
-//        if (studentUpdateRequest.getEmail() != null) {
-//            updatedStudent.setEmail(studentUpdateRequest.getEmail());
-//        }
-//
-//        if (studentUpdateRequest.getActive() != null) {
-//            updatedStudent.setActive(studentUpdateRequest.getActive());
-//        }
         studentMapper.toStudent(updatedStudent, studentUpdateRequest);
 
         return studentRepository.save(updatedStudent);

@@ -4,10 +4,7 @@ import com.wonically.crudent.entity.Student;
 import com.wonically.crudent.model.request.StudentCreationRequest;
 import com.wonically.crudent.model.request.StudentUpdateRequest;
 import com.wonically.crudent.model.response.StudentResponse;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface StudentMapper {
