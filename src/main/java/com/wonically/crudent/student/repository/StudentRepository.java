@@ -1,11 +1,13 @@
-package com.wonically.crudent.repository;
+package com.wonically.crudent.student.repository;
 
-import com.wonically.crudent.entity.Student;
+import com.wonically.crudent.student.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student, UUID> {
     Boolean existsByCode(String code);
     Boolean existsByPhoneNumber(String phoneNumber);
     Boolean existsByEmail(String email);

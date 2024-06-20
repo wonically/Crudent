@@ -1,5 +1,6 @@
-package com.wonically.crudent.entity;
+package com.wonically.crudent.student.entity;
 
+import com.wonically.crudent.school.entity.School;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +25,10 @@ public class Student {
 
     @Column(name = "code", unique = true)
     String code;
+
+    @ManyToOne(targetEntity = School.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "school")
+    School school;
 
     @Column(name = "name")
     String name;

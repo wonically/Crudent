@@ -1,13 +1,14 @@
-package com.wonically.crudent.service.impl;
+package com.wonically.crudent.student.service.impl;
 
-import com.wonically.crudent.entity.Student;
+import com.wonically.crudent.school.repository.SchoolRepository;
+import com.wonically.crudent.student.entity.Student;
 import com.wonically.crudent.exception.AppException;
 import com.wonically.crudent.exception.ErrorCode;
-import com.wonically.crudent.model.mapper.StudentMapper;
-import com.wonically.crudent.model.request.StudentCreationRequest;
-import com.wonically.crudent.model.request.StudentUpdateRequest;
-import com.wonically.crudent.repository.StudentRepository;
-import com.wonically.crudent.service.StudentService;
+import com.wonically.crudent.student.model.mapper.StudentMapper;
+import com.wonically.crudent.student.model.request.StudentCreationRequest;
+import com.wonically.crudent.student.model.request.StudentUpdateRequest;
+import com.wonically.crudent.student.repository.StudentRepository;
+import com.wonically.crudent.student.service.StudentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,11 +25,19 @@ public class StudentServiceImpl implements StudentService {
     StudentRepository studentRepository;
     @Autowired
     StudentMapper studentMapper;
+    @Autowired
+    SchoolRepository schoolRepository;
 
     @Override
     public Student createStudent(StudentCreationRequest studentCreationRequest) {
         if (studentRepository.existsByCode(studentCreationRequest.getCode())) {
             throw new AppException(ErrorCode.CODE_EXISTED);
+        }
+
+        if (!schoolRepository.existsByCode(studentCreationRequest.getSchoolCode())) {
+            throw new AppException(ErrorCode.SCHOOL_NOT_EXISTED);
+        } else {
+            studentCreationRequest.setSchool(schoolRepository.findByCode(studentCreationRequest.getSchoolCode()));
         }
 
         if (studentRepository.existsByPhoneNumber(studentCreationRequest.getPhoneNumber())) {
@@ -63,6 +72,11 @@ public class StudentServiceImpl implements StudentService {
         Student updatedStudent = studentRepository.findByCode(code);
         if (updatedStudent == null) {
             throw new AppException(ErrorCode.STUDENT_NOT_EXISTED);
+        }
+        if (studentUpdateRequest.getSchoolCode() != null && !schoolRepository.existsByCode(studentUpdateRequest.getSchoolCode())) {
+            throw new AppException(ErrorCode.SCHOOL_NOT_EXISTED);
+        } else if (studentUpdateRequest.getSchoolCode() != null) {
+            studentUpdateRequest.setSchool(schoolRepository.findByCode(studentUpdateRequest.getSchoolCode()));
         }
 
         studentMapper.toStudent(updatedStudent, studentUpdateRequest);

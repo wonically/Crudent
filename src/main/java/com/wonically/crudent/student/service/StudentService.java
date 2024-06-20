@@ -1,8 +1,8 @@
-package com.wonically.crudent.service;
+package com.wonically.crudent.student.service;
 
-import com.wonically.crudent.entity.Student;
-import com.wonically.crudent.model.request.StudentCreationRequest;
-import com.wonically.crudent.model.request.StudentUpdateRequest;
+import com.wonically.crudent.student.entity.Student;
+import com.wonically.crudent.student.model.request.StudentCreationRequest;
+import com.wonically.crudent.student.model.request.StudentUpdateRequest;
 
 import java.util.List;
 

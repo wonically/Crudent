@@ -23,8 +23,14 @@ public enum ErrorCode {
     EMAIL_EXISTED(1010, "Email has existed.", HttpStatus.BAD_REQUEST),
     INVALID_ACTIVE(1011, "Active must be true or false.", HttpStatus.BAD_REQUEST),
     STUDENT_NOT_EXISTED(1012, "Student not existed.", HttpStatus.NOT_FOUND),
-    UNAUTHENTICATED(1013, "Unauthenticated.", HttpStatus.UNAUTHORIZED),
-    UNAUTHORIZED(1014, "You do not have permission.", HttpStatus.FORBIDDEN),
+    INVALID_SCHOOL(1013, "School code must be from S01 to S99.", HttpStatus.BAD_REQUEST),
+    INVALID_TYPE(1014, "Type must be public or private.", HttpStatus.BAD_REQUEST),
+    INVALID_LEVEL(1015, "Level must be elementary, primary, secondary, high school, or university.", HttpStatus.BAD_REQUEST),
+    INVALID_WEBSITE(1016, "Please enter correct website format.", HttpStatus.BAD_REQUEST),
+    WEBSITE_EXISTED(1017, "Website has existed.", HttpStatus.BAD_REQUEST),
+    SCHOOL_NOT_EXISTED(1018, "School not existed.", HttpStatus.NOT_FOUND),
+    UNAUTHENTICATED(1019, "Unauthenticated.", HttpStatus.UNAUTHORIZED),
+    UNAUTHORIZED(1020, "You do not have permission.", HttpStatus.FORBIDDEN),
     ;
 
     Integer code;
