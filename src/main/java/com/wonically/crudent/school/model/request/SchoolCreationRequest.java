@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 public class SchoolCreationRequest {
     @NotBlank(message = "INVALID_CODE")
     @Pattern(regexp = "^S[0-9]{2}$", message = "INVALID_CODE")
-    String code;
+    String schoolCode;
 
     @NotBlank(message = "INVALID_NAME")
     @Pattern(regexp = "^([A-Za-z]*\\s)+[A-Za-z]*$", message = "INVALID_NAME")

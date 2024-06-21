@@ -11,6 +11,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/student")
 @RequiredArgsConstructor
@@ -23,6 +25,13 @@ public class StudentController {
     ApiResponse createStudent(@Valid @RequestBody StudentCreationRequest studentCreationRequest) {
         return ApiResponse.builder()
                 .result(studentServiceImpl.createStudent(studentCreationRequest))
+                .build();
+    }
+
+    @PostMapping("/creates")
+    ApiResponse createStudents(@RequestBody @Valid List<StudentCreationRequest> studentCreationRequests) {
+        return ApiResponse.builder()
+                .result(studentServiceImpl.createStudents(studentCreationRequests))
                 .build();
     }
 

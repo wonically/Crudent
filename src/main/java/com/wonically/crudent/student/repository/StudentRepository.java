@@ -14,5 +14,5 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
     Boolean existsByPhoneNumber(String phoneNumber);
     Boolean existsByEmail(String email);
     Student findByCode(String code);
-    Page<Student> findAllBySchool_Code(String code, Pageable pageable);
+    Page<Student> findStudentBySchool_SchoolCode(String code, Pageable pageable);
 }

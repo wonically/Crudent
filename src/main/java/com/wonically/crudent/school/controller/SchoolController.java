@@ -11,6 +11,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/school")
 @RequiredArgsConstructor
@@ -24,6 +26,13 @@ public class SchoolController {
         return ApiResponse.builder()
                 .result(schoolServiceImpl.createSchool(schoolCreationRequest))
                 .build();
+    }
+
+    @PostMapping("/creates")
+    ApiResponse createSchools(@RequestBody List<@Valid SchoolCreationRequest> schoolCreationRequests) {
+        return ApiResponse.builder()
+               .result(schoolServiceImpl.createSchools(schoolCreationRequests))
+               .build();
     }
 
     @GetMapping("/list/{pageNo}")

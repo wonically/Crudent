@@ -18,6 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -35,11 +38,10 @@ public class StudentServiceImpl implements StudentService {
             throw new AppException(ErrorCode.CODE_EXISTED);
         }
 
-        if (!schoolRepository.existsByCode(studentCreationRequest.getSchoolCode())) {
+        if (!schoolRepository.existsBySchoolCode(studentCreationRequest.getSchoolCode())) {
             throw new AppException(ErrorCode.SCHOOL_NOT_EXISTED);
-        } else {
-            studentCreationRequest.setSchool(schoolRepository.findByCode(studentCreationRequest.getSchoolCode()));
         }
+        studentCreationRequest.setSchool(schoolRepository.findBySchoolCode(studentCreationRequest.getSchoolCode()));
 
         if (studentRepository.existsByPhoneNumber(studentCreationRequest.getPhoneNumber())) {
             throw new AppException(ErrorCode.PHONE_NUMBER_EXISTED);
@@ -51,6 +53,24 @@ public class StudentServiceImpl implements StudentService {
 
         Student newStudent = studentMapper.toStudent(studentCreationRequest);
         return studentMapper.toStudentResponse(studentRepository.save(newStudent));
+    }
+
+    @Override
+    public List<StudentResponse> createStudents(List<StudentCreationRequest> studentCreationRequests) {
+        List<StudentResponse> result = new ArrayList<>();
+        for (StudentCreationRequest studentCreationRequest : studentCreationRequests) {
+            try {
+                result.add(createStudent(studentCreationRequest));
+            } catch (RuntimeException exception) {
+                result.add(StudentResponse.builder()
+                        .code(studentCreationRequest.getCode())
+                        .name("Error saving " + studentCreationRequest.getName())
+                        .address(exception.getMessage())
+                        .build());
+                System.out.println(studentCreationRequest);
+            }
+        };
+        return result;
     }
 
     @Override
@@ -70,7 +90,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Page<StudentResponse> getStudentBySchoolCode(String code, int pageNo) {
-        return studentRepository.findAllBySchool_Code(code, PageRequest.of(pageNo, 5)).map(studentMapper::toStudentResponse);
+        return studentRepository.findStudentBySchool_SchoolCode(code, PageRequest.of(pageNo, 5)).map(studentMapper::toStudentResponse);
     }
 
     @Override
@@ -79,10 +99,10 @@ public class StudentServiceImpl implements StudentService {
         if (updatedStudent == null) {
             throw new AppException(ErrorCode.STUDENT_NOT_EXISTED);
         }
-        if (studentUpdateRequest.getSchoolCode() != null && !schoolRepository.existsByCode(studentUpdateRequest.getSchoolCode())) {
+        if (studentUpdateRequest.getSchoolCode() != null && !schoolRepository.existsBySchoolCode(studentUpdateRequest.getSchoolCode())) {
             throw new AppException(ErrorCode.SCHOOL_NOT_EXISTED);
         } else if (studentUpdateRequest.getSchoolCode() != null) {
-            studentUpdateRequest.setSchool(schoolRepository.findByCode(studentUpdateRequest.getSchoolCode()));
+            studentUpdateRequest.setSchool(schoolRepository.findBySchoolCode(studentUpdateRequest.getSchoolCode()));
         }
 
         studentMapper.toStudent(updatedStudent, studentUpdateRequest);

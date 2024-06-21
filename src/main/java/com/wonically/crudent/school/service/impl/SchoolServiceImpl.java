@@ -18,6 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -31,12 +34,12 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public SchoolResponse createSchool(SchoolCreationRequest schoolCreationRequest) {
-        if (schoolRepository.existsByCode(schoolCreationRequest.getCode())) {
+        if (schoolRepository.existsBySchoolCode(schoolCreationRequest.getSchoolCode())) {
             throw new AppException(ErrorCode.CODE_EXISTED);
         }
 
         if (schoolRepository.existsByAddress(schoolCreationRequest.getAddress())) {
-            throw new AppException(ErrorCode.PHONE_NUMBER_EXISTED);
+            throw new AppException(ErrorCode.ADDRESS_EXISTED);
         }
 
         if (schoolRepository.existsByWebsite(schoolCreationRequest.getWebsite())) {
@@ -53,13 +56,32 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
+    public List<SchoolResponse> createSchools(List<SchoolCreationRequest> schoolCreationRequests) {
+        List<SchoolResponse> result = new ArrayList<>();
+        for (SchoolCreationRequest schoolCreationRequest : schoolCreationRequests) {
+            try {
+                School newSchool = schoolMapper.toSchool(schoolCreationRequest);
+                schoolRepository.save(newSchool);
+                result.add(schoolMapper.toSchoolResponse(newSchool));
+            } catch (RuntimeException exception) {
+                result.add(SchoolResponse.builder()
+                                .code(schoolCreationRequest.getSchoolCode())
+                                .name("Error saving " + schoolCreationRequest.getName())
+                                .address(exception.getMessage())
+                                .build());
+            }
+        };
+        return result;
+    }
+
+    @Override
     public Page<SchoolResponse> getSchools(int pageNo) {
         return schoolRepository.findAll(PageRequest.of(pageNo, 5)).map(schoolMapper::toSchoolResponse);
     }
 
     @Override
     public SchoolResponse getSchool(String code) {
-        School school = schoolRepository.findByCode(code);
+        School school = schoolRepository.findBySchoolCode(code);
         if (school == null) {
             throw new AppException(ErrorCode.SCHOOL_NOT_EXISTED);
         }
@@ -68,7 +90,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public SchoolResponse updateSchool(String code, SchoolUpdateRequest schoolUpdateRequest) {
-        School updatedSchool = schoolRepository.findByCode(code);
+        School updatedSchool = schoolRepository.findBySchoolCode(code);
         if (updatedSchool == null) {
             throw new AppException(ErrorCode.SCHOOL_NOT_EXISTED);
         }

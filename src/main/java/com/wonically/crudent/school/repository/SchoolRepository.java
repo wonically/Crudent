@@ -8,9 +8,9 @@ import java.util.UUID;
 
 @Repository
 public interface SchoolRepository extends JpaRepository<School, UUID> {
-    Boolean existsByCode(String code);
+    Boolean existsBySchoolCode(String code);
     Boolean existsByAddress(String address);
     Boolean existsByWebsite(String website);
     Boolean existsByEmail(String email);
-    School findByCode(String code);
+    School findBySchoolCode(String code);
 }

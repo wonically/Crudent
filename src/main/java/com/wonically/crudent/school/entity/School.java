@@ -27,7 +27,7 @@ public class School {
     UUID id;
 
     @Column(name = "code", unique = true)
-    String code;
+    String schoolCode;
 
     @Column(name = "name")
     String name;
