@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,34 +20,30 @@ public class SchoolController {
     SchoolServiceImpl schoolServiceImpl;
 
     @PostMapping("/create")
-    ResponseEntity<ApiResponse> createSchool(@Valid @RequestBody SchoolCreationRequest schoolCreationRequest) {
-        ApiResponse apiResponse = ApiResponse.builder()
+    ApiResponse createSchool(@Valid @RequestBody SchoolCreationRequest schoolCreationRequest) {
+        return ApiResponse.builder()
                 .result(schoolServiceImpl.createSchool(schoolCreationRequest))
                 .build();
-        return ResponseEntity.badRequest().body(apiResponse);
     }
 
-    @GetMapping("/list")
-    ResponseEntity<ApiResponse> getSchools() {
-        ApiResponse apiResponse = ApiResponse.builder()
-                .result(schoolServiceImpl.getSchools())
+    @GetMapping("/list/{pageNo}")
+    ApiResponse getSchools(@PathVariable int pageNo) {
+        return ApiResponse.builder()
+                .result(schoolServiceImpl.getSchools(pageNo - 1))
                 .build();
-        return ResponseEntity.badRequest().body(apiResponse);
     }
 
     @GetMapping("/{code}")
-    ResponseEntity<ApiResponse> getSchool(@PathVariable String code) {
-        ApiResponse apiResponse = ApiResponse.builder()
+    ApiResponse getSchool(@PathVariable String code) {
+        return ApiResponse.builder()
                 .result(schoolServiceImpl.getSchool(code))
                 .build();
-        return ResponseEntity.badRequest().body(apiResponse);
     }
 
     @PutMapping("/put/{code}")
-    ResponseEntity<ApiResponse> updateSchool (@Valid @PathVariable String code, @Valid @RequestBody SchoolUpdateRequest schoolUpdateRequest) {
-        ApiResponse apiResponse = ApiResponse.builder()
+    ApiResponse updateSchool (@Valid @PathVariable String code, @Valid @RequestBody SchoolUpdateRequest schoolUpdateRequest) {
+        return ApiResponse.builder()
                 .result(schoolServiceImpl.updateSchool(code, schoolUpdateRequest))
                 .build();
-        return ResponseEntity.badRequest().body(apiResponse);
     }
 }

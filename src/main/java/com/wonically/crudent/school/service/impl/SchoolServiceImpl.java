@@ -6,15 +6,17 @@ import com.wonically.crudent.school.entity.School;
 import com.wonically.crudent.school.model.mapper.SchoolMapper;
 import com.wonically.crudent.school.model.request.SchoolCreationRequest;
 import com.wonically.crudent.school.model.request.SchoolUpdateRequest;
+import com.wonically.crudent.school.model.response.SchoolResponse;
 import com.wonically.crudent.school.repository.SchoolRepository;
 import com.wonically.crudent.school.service.SchoolService;
+import com.wonically.crudent.student.model.mapper.StudentMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +26,11 @@ public class SchoolServiceImpl implements SchoolService {
     SchoolRepository schoolRepository;
     @Autowired
     SchoolMapper schoolMapper;
+    @Autowired
+    StudentMapper studentMapper;
 
     @Override
-    public School createSchool(SchoolCreationRequest schoolCreationRequest) {
+    public SchoolResponse createSchool(SchoolCreationRequest schoolCreationRequest) {
         if (schoolRepository.existsByCode(schoolCreationRequest.getCode())) {
             throw new AppException(ErrorCode.CODE_EXISTED);
         }
@@ -45,25 +49,25 @@ public class SchoolServiceImpl implements SchoolService {
 
         School newSchool = schoolMapper.toSchool(schoolCreationRequest);
 
-        return schoolRepository.save(newSchool);
+        return schoolMapper.toSchoolResponse(schoolRepository.save(newSchool));
     }
 
     @Override
-    public List<School> getSchools() {
-        return schoolRepository.findAll();
+    public Page<SchoolResponse> getSchools(int pageNo) {
+        return schoolRepository.findAll(PageRequest.of(pageNo, 5)).map(schoolMapper::toSchoolResponse);
     }
 
     @Override
-    public School getSchool(String code) {
+    public SchoolResponse getSchool(String code) {
         School school = schoolRepository.findByCode(code);
         if (school == null) {
             throw new AppException(ErrorCode.SCHOOL_NOT_EXISTED);
         }
-        return school;
+        return schoolMapper.toSchoolResponse(school);
     }
 
     @Override
-    public School updateSchool(String code, SchoolUpdateRequest schoolUpdateRequest) {
+    public SchoolResponse updateSchool(String code, SchoolUpdateRequest schoolUpdateRequest) {
         School updatedSchool = schoolRepository.findByCode(code);
         if (updatedSchool == null) {
             throw new AppException(ErrorCode.SCHOOL_NOT_EXISTED);
@@ -71,6 +75,6 @@ public class SchoolServiceImpl implements SchoolService {
 
         schoolMapper.toSchool(updatedSchool, schoolUpdateRequest);
 
-        return schoolRepository.save(updatedSchool);
+        return schoolMapper.toSchoolResponse(schoolRepository.save(updatedSchool));
     }
 }

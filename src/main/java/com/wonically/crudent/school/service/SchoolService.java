@@ -1,17 +1,16 @@
 package com.wonically.crudent.school.service;
 
-import com.wonically.crudent.school.entity.School;
 import com.wonically.crudent.school.model.request.SchoolCreationRequest;
 import com.wonically.crudent.school.model.request.SchoolUpdateRequest;
-
-import java.util.List;
+import com.wonically.crudent.school.model.response.SchoolResponse;
+import org.springframework.data.domain.Page;
 
 public interface SchoolService {
-    School createSchool(SchoolCreationRequest schoolCreationRequest);
+    SchoolResponse createSchool(SchoolCreationRequest schoolCreationRequest);
 
-    List<School> getSchools();
+    Page<SchoolResponse> getSchools(int pageNo);
 
-    School getSchool(String code);
+    SchoolResponse getSchool(String code);
 
-    School updateSchool(String code, SchoolUpdateRequest schoolUpdateRequest);
+    SchoolResponse updateSchool(String code, SchoolUpdateRequest schoolUpdateRequest);
 }

@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,34 +20,37 @@ public class StudentController {
     StudentServiceImpl studentServiceImpl;
 
     @PostMapping("/create")
-    ResponseEntity<ApiResponse> createStudent(@Valid @RequestBody StudentCreationRequest studentCreationRequest) {
-        ApiResponse apiResponse = ApiResponse.builder()
+    ApiResponse createStudent(@Valid @RequestBody StudentCreationRequest studentCreationRequest) {
+        return ApiResponse.builder()
                 .result(studentServiceImpl.createStudent(studentCreationRequest))
                 .build();
-        return ResponseEntity.badRequest().body(apiResponse);
     }
 
-    @GetMapping("/list")
-    ResponseEntity<ApiResponse> getStudents() {
-        ApiResponse apiResponse = ApiResponse.builder()
-               .result(studentServiceImpl.getStudents())
+    @GetMapping("/list/{pageNo}")
+    ApiResponse getStudents(@PathVariable int pageNo) {
+        return ApiResponse.builder()
+               .result(studentServiceImpl.getStudents(pageNo - 1))
                .build();
-        return ResponseEntity.badRequest().body(apiResponse);
     }
 
     @GetMapping("/{code}")
-    ResponseEntity<ApiResponse> getStudent(@PathVariable String code) {
-        ApiResponse apiResponse = ApiResponse.builder()
+    ApiResponse getStudent(@PathVariable String code) {
+        return ApiResponse.builder()
                .result(studentServiceImpl.getStudent(code))
                .build();
-        return ResponseEntity.badRequest().body(apiResponse);
+    }
+
+    @GetMapping("/school/{code}/{pageNo}")
+    ApiResponse getStudentBySchoolCode(@PathVariable String code, @PathVariable int pageNo) {
+        return ApiResponse.builder()
+                .result(studentServiceImpl.getStudentBySchoolCode(code, pageNo - 1))
+                .build();
     }
 
     @PutMapping("/put/{code}")
-    ResponseEntity<ApiResponse> updateStudent (@Valid @PathVariable String code, @Valid @RequestBody StudentUpdateRequest studentUpdateRequest) {
-        ApiResponse apiResponse = ApiResponse.builder()
+    ApiResponse updateStudent (@Valid @PathVariable String code, @Valid @RequestBody StudentUpdateRequest studentUpdateRequest) {
+        return ApiResponse.builder()
                 .result(studentServiceImpl.updateStudent(code, studentUpdateRequest))
                 .build();
-        return ResponseEntity.badRequest().body(apiResponse);
     }
 }

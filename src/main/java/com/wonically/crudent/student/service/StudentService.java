@@ -1,17 +1,18 @@
 package com.wonically.crudent.student.service;
 
-import com.wonically.crudent.student.entity.Student;
 import com.wonically.crudent.student.model.request.StudentCreationRequest;
 import com.wonically.crudent.student.model.request.StudentUpdateRequest;
-
-import java.util.List;
+import com.wonically.crudent.student.model.response.StudentResponse;
+import org.springframework.data.domain.Page;
 
 public interface StudentService {
-    Student createStudent(StudentCreationRequest studentCreationRequest);
+    StudentResponse createStudent(StudentCreationRequest studentCreationRequest);
 
-    List<Student> getStudents();
+    Page<StudentResponse> getStudents(int pageNo);
 
-    Student getStudent(String code);
+    StudentResponse getStudent(String code);
 
-    Student updateStudent(String code, StudentUpdateRequest studentUpdateRequest);
+    Page<StudentResponse> getStudentBySchoolCode(String code, int pageNo);
+
+    StudentResponse updateStudent(String code, StudentUpdateRequest studentUpdateRequest);
 }

@@ -1,5 +1,7 @@
 package com.wonically.crudent.school.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wonically.crudent.student.entity.Student;
 import jakarta.persistence.*;
 import lombok.*;
@@ -56,6 +58,9 @@ public class School {
     @UpdateTimestamp
     Instant updatedAt;
 
-    @OneToMany(mappedBy = "code", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "student")
+    @OneToMany(mappedBy = "school",fetch = FetchType.LAZY)
     List<Student> student;
 }

@@ -26,7 +26,7 @@ public class Student {
     @Column(name = "code", unique = true)
     String code;
 
-    @ManyToOne(targetEntity = School.class, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "school")
     School school;
 

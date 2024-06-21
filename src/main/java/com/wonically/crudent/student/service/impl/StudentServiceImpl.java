@@ -1,21 +1,22 @@
 package com.wonically.crudent.student.service.impl;
 
-import com.wonically.crudent.school.repository.SchoolRepository;
-import com.wonically.crudent.student.entity.Student;
 import com.wonically.crudent.exception.AppException;
 import com.wonically.crudent.exception.ErrorCode;
+import com.wonically.crudent.school.repository.SchoolRepository;
+import com.wonically.crudent.student.entity.Student;
 import com.wonically.crudent.student.model.mapper.StudentMapper;
 import com.wonically.crudent.student.model.request.StudentCreationRequest;
 import com.wonically.crudent.student.model.request.StudentUpdateRequest;
+import com.wonically.crudent.student.model.response.StudentResponse;
 import com.wonically.crudent.student.repository.StudentRepository;
 import com.wonically.crudent.student.service.StudentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class StudentServiceImpl implements StudentService {
     SchoolRepository schoolRepository;
 
     @Override
-    public Student createStudent(StudentCreationRequest studentCreationRequest) {
+    public StudentResponse createStudent(StudentCreationRequest studentCreationRequest) {
         if (studentRepository.existsByCode(studentCreationRequest.getCode())) {
             throw new AppException(ErrorCode.CODE_EXISTED);
         }
@@ -49,26 +50,31 @@ public class StudentServiceImpl implements StudentService {
         }
 
         Student newStudent = studentMapper.toStudent(studentCreationRequest);
-
-        return studentRepository.save(newStudent);
+        return studentMapper.toStudentResponse(studentRepository.save(newStudent));
     }
 
     @Override
-    public List<Student> getStudents() {
-        return studentRepository.findAll();
+    public Page<StudentResponse> getStudents(int pageNo) {
+        return studentRepository.findAll(PageRequest.of(pageNo, 5)).map(studentMapper::toStudentResponse);
     }
 
     @Override
-    public Student getStudent(String code) {
+    public StudentResponse getStudent(String code) {
         Student student = studentRepository.findByCode(code);
         if (student == null) {
             throw new AppException(ErrorCode.STUDENT_NOT_EXISTED);
         }
-        return student;
+
+        return studentMapper.toStudentResponse(student);
     }
 
     @Override
-    public Student updateStudent(String code, StudentUpdateRequest studentUpdateRequest) {
+    public Page<StudentResponse> getStudentBySchoolCode(String code, int pageNo) {
+        return studentRepository.findAllBySchool_Code(code, PageRequest.of(pageNo, 5)).map(studentMapper::toStudentResponse);
+    }
+
+    @Override
+    public StudentResponse updateStudent(String code, StudentUpdateRequest studentUpdateRequest) {
         Student updatedStudent = studentRepository.findByCode(code);
         if (updatedStudent == null) {
             throw new AppException(ErrorCode.STUDENT_NOT_EXISTED);
@@ -80,7 +86,6 @@ public class StudentServiceImpl implements StudentService {
         }
 
         studentMapper.toStudent(updatedStudent, studentUpdateRequest);
-
-        return studentRepository.save(updatedStudent);
+        return studentMapper.toStudentResponse(studentRepository.save(updatedStudent));
     }
 }
