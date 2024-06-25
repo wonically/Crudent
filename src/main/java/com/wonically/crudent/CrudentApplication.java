@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = "com.wonically.crudent")
 public class CrudentApplication {
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         SpringApplication.run(CrudentApplication.class, args);
     }
 

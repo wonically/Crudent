@@ -14,8 +14,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -74,9 +72,14 @@ public class SchoolServiceImpl implements SchoolService {
         return result;
     }
 
+//    @Override
+//    public Page<SchoolResponse> getSchools(int pageNo) {
+//        return schoolRepository.findAll(PageRequest.of(pageNo, 5)).map(schoolMapper::toSchoolResponse);
+//    }
+
     @Override
-    public Page<SchoolResponse> getSchools(int pageNo) {
-        return schoolRepository.findAll(PageRequest.of(pageNo, 5)).map(schoolMapper::toSchoolResponse);
+    public List<SchoolResponse> getSchools() {
+        return schoolRepository.findAll().stream().map(schoolMapper::toSchoolResponse).toList();
     }
 
     @Override

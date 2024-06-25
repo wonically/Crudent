@@ -14,8 +14,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,9 +71,14 @@ public class StudentServiceImpl implements StudentService {
         return result;
     }
 
+//    @Override
+//    public Page<StudentResponse> getStudents(int pageNo) {
+//        return studentRepository.findAll(PageRequest.of(pageNo, 5)).map(studentMapper::toStudentResponse);
+//    }
+
     @Override
-    public Page<StudentResponse> getStudents(int pageNo) {
-        return studentRepository.findAll(PageRequest.of(pageNo, 5)).map(studentMapper::toStudentResponse);
+    public List<StudentResponse> getStudents() {
+        return studentRepository.findAll().stream().map(studentMapper::toStudentResponse).toList();
     }
 
     @Override
@@ -88,9 +91,14 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.toStudentResponse(student);
     }
 
+//    @Override
+//    public Page<StudentResponse> getStudentBySchoolCode(String code, int pageNo) {
+//        return studentRepository.findStudentBySchool_SchoolCode(code, PageRequest.of(pageNo, 5)).map(studentMapper::toStudentResponse);
+//    }
+
     @Override
-    public Page<StudentResponse> getStudentBySchoolCode(String code, int pageNo) {
-        return studentRepository.findStudentBySchool_SchoolCode(code, PageRequest.of(pageNo, 5)).map(studentMapper::toStudentResponse);
+    public List<StudentResponse> getStudentBySchoolCode(String code) {
+        return studentRepository.findStudentBySchool_SchoolCode(code).stream().map(studentMapper::toStudentResponse).toList();
     }
 
     @Override

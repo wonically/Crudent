@@ -12,7 +12,9 @@ public interface SchoolService {
 
     List<SchoolResponse> createSchools(List<SchoolCreationRequest> schoolCreationRequests);
 
-    Page<SchoolResponse> getSchools(int pageNo);
+//    Page<SchoolResponse> getSchools(int pageNo);
+
+    List<SchoolResponse> getSchools();
 
     SchoolResponse getSchool(String code);
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/school")
 @RequiredArgsConstructor
@@ -35,10 +36,17 @@ public class SchoolController {
                .build();
     }
 
-    @GetMapping("/list/{pageNo}")
-    ApiResponse getSchools(@PathVariable int pageNo) {
+//    @GetMapping("/list/{pageNo}")
+//    ApiResponse getSchools(@PathVariable int pageNo) {
+//        return ApiResponse.builder()
+//                .result(schoolServiceImpl.getSchools(pageNo - 1))
+//                .build();
+//    }
+
+    @GetMapping("/list")
+    ApiResponse getSchools() {
         return ApiResponse.builder()
-                .result(schoolServiceImpl.getSchools(pageNo - 1))
+                .result(schoolServiceImpl.getSchools())
                 .build();
     }
 

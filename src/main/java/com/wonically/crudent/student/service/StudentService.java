@@ -14,11 +14,15 @@ public interface StudentService {
 
     List<StudentResponse> createStudents(List<StudentCreationRequest> studentCreationRequests);
 
-    Page<StudentResponse> getStudents(int pageNo);
+//    Page<StudentResponse> getStudents(int pageNo);
+
+    List<StudentResponse> getStudents();
 
     StudentResponse getStudent(String code);
 
-    Page<StudentResponse> getStudentBySchoolCode(String code, int pageNo);
+//    Page<StudentResponse> getStudentBySchoolCode(String code, int pageNo);
+
+    List<StudentResponse> getStudentBySchoolCode(String code);
 
     StudentResponse updateStudent(String code, StudentUpdateRequest studentUpdateRequest);
 }

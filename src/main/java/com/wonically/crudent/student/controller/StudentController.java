@@ -3,6 +3,7 @@ package com.wonically.crudent.student.controller;
 import com.wonically.crudent.model.response.ApiResponse;
 import com.wonically.crudent.student.model.request.StudentCreationRequest;
 import com.wonically.crudent.student.model.request.StudentUpdateRequest;
+import com.wonically.crudent.student.model.response.StudentResponse;
 import com.wonically.crudent.student.service.impl.StudentServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/student")
 @RequiredArgsConstructor
@@ -35,11 +37,19 @@ public class StudentController {
                 .build();
     }
 
-    @GetMapping("/list/{pageNo}")
-    ApiResponse getStudents(@PathVariable int pageNo) {
+//    @GetMapping("/page/{pageNo}")
+//    ApiResponse getStudents(@PathVariable(required = false) Integer pageNo) {
+//        int pageNumber = pageNo != null ? pageNo : 1;
+//        return ApiResponse.builder()
+//               .result(studentServiceImpl.getStudents(pageNumber - 1))
+//               .build();
+//    }
+
+    @GetMapping("/list")
+    ApiResponse getStudents() {
         return ApiResponse.builder()
-               .result(studentServiceImpl.getStudents(pageNo - 1))
-               .build();
+                .result(studentServiceImpl.getStudents())
+                .build();
     }
 
     @GetMapping("/{code}")
@@ -52,7 +62,7 @@ public class StudentController {
     @GetMapping("/school/{code}/{pageNo}")
     ApiResponse getStudentBySchoolCode(@PathVariable String code, @PathVariable int pageNo) {
         return ApiResponse.builder()
-                .result(studentServiceImpl.getStudentBySchoolCode(code, pageNo - 1))
+                .result(studentServiceImpl.getStudentBySchoolCode(code))
                 .build();
     }
 
